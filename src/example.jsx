@@ -16,7 +16,7 @@ function dom(tag, _attrs, ...children) {
         try {
             return t.render(props);
         } catch(e) {
-            throw new Error("Component must have a `render` method");
+            throw new Error("Component must have a valid `render` method");
         }
     } else if (typeof tag === "function") {
         return tag(props);
@@ -123,12 +123,6 @@ class Component {
 
 class TestComponent extends Component {
     render() {
-        // return (
-        //     <div>
-        //         Test Render Method
-        //         <div>{ this.props._debug() }</div>
-        //     </div>
-        // );
         return (
             <Fragment>
                 <Fragment>
@@ -145,24 +139,18 @@ function Main() {
     return (
         <div>
             <Fragment>
-            <Fragment>
-            <Fragment>
-                <Headline title={ `Prop Test` }/>
-                <TestComponent />
-                <p>Lorem ipsum</p>
-                <p>{ Math.random() > 0.5 ? "YES" : "NO" }</p>
-                <p>{ Date.now() }</p>
-                    <p>WOOOO!</p>
-                <ol> { [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].map(item => <li>{ item }</li>) } </ol>
-                <button ref={ node => { 
-                    node.addEventListener("click", replaceElement);
-                }}>Refresh View</button>
-                <ul>
-                    <li><button onclick={ () => alert("Hello") }>Click Me</button></li>
-                    <li><a href="">anchor</a></li>
-                    <li>2</li>
-                    <li><a href="">anchor2</a> More</li>
-                    <li>
+                <Fragment>
+                    <Fragment>
+                        <Headline title={ `Prop Test` }/>
+                        <TestComponent />
+                        <p>Lorem ipsum</p>
+                        <p>{ Math.random() > 0.5 ? "YES" : "NO" }</p>
+                        <p>{ Date.now() }</p>
+                            <p>WOOOO!</p>
+                        <ol> { [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].map(item => <li>{ item }</li>) } </ol>
+                        <button ref={ node => { 
+                            node.addEventListener("click", replaceElement);
+                        }}>Refresh View</button>
                         <ul>
                             <li><button onclick={ () => alert("Hello") }>Click Me</button></li>
                             <li><a href="">anchor</a></li>
@@ -174,13 +162,19 @@ function Main() {
                                     <li><a href="">anchor</a></li>
                                     <li>2</li>
                                     <li><a href="">anchor2</a> More</li>
+                                    <li>
+                                        <ul>
+                                            <li><button onclick={ () => alert("Hello") }>Click Me</button></li>
+                                            <li><a href="">anchor</a></li>
+                                            <li>2</li>
+                                            <li><a href="">anchor2</a> More</li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
-                    </li>
-                </ul>
-            </Fragment>
-            </Fragment>
+                    </Fragment>
+                </Fragment>
             </Fragment>
         </div>
     );
