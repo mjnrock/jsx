@@ -79,6 +79,7 @@ function Main() {
             <Fragment>
                 <Headline title={ `Prop Test` }/>
                 <p>Lorem ipsum</p>
+                <p>{ Math.random() > 0.5 ? "YES" : "NO" }</p>
                 <p>{ Date.now() }</p>
                     <p>WOOOO!</p>
                 <ol> { [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].map(item => <li>{ item }</li>) } </ol>
