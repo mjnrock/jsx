@@ -88,6 +88,8 @@ function Headline(props) {
 }
 
 class Component {
+    static isClass = true;  // Used as a flag for the `.dom(...)` method to determine if the class extends from the JSX project lineage
+
     constructor(props, state = {}) {
         this.props = props;
         this._state = this.getInitialState(props, state);
@@ -118,7 +120,6 @@ class Component {
         );
     }
 }
-Component.isClass = true;
 
 class TestComponent extends Component {
     render() {
