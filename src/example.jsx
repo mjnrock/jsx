@@ -59,11 +59,11 @@ function Fragment() {
 }
 
 function Headline() {
-    bob = () => console.log(Date.now());
+    cat = () => console.log(Date.now());
 
     return (
         <h1 className="headline">
-            <button onclick={ bob }>Prop Test</button>
+            <button onclick={ cat }>Prop Test</button>
             Inital Line
             <br />
             new line
@@ -74,44 +74,24 @@ function Headline() {
 function Main() {
     return (
         <div>
-        <Fragment>
-            <Headline />
-            <p>Lorem ipsum</p>
-            <p>{ Date.now }</p>
-                <p>WOOOO!</p>
-            <ol> { [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].map(item => <li>{ item }</li>) } </ol>
-            <button ref={ node => { 
-                node.addEventListener("click", replaceElement);
-            }}>Refresh View</button>
-            <ul>
-                <li><button onclick={ () => alert("Hello") }>Click Me</button></li>
-                <li><a href="">anchor</a></li>
-                <li>2</li>
-                <li><a href="">anchor2</a> More</li>
-            </ul>
-        </Fragment>        
+            <Fragment>
+                <Headline />
+                <p>Lorem ipsum</p>
+                <p>{ Date.now }</p>
+                    <p>WOOOO!</p>
+                <ol> { [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].map(item => <li>{ item }</li>) } </ol>
+                <button ref={ node => { 
+                    node.addEventListener("click", replaceElement);
+                }}>Refresh View</button>
+                <ul>
+                    <li><button onclick={ () => alert("Hello") }>Click Me</button></li>
+                    <li><a href="">anchor</a></li>
+                    <li>2</li>
+                    <li><a href="">anchor2</a> More</li>
+                </ul>
+            </Fragment>
         </div>
     );
-    // return (
-    //     <div>
-    //         <Fragment>
-    //             <Headline />
-    //             <p>Lorem ipsum</p>
-    //             <p>{ Date.now }</p>
-    //                 <p>WOOOO!</p>
-    //             <ol> { [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ].map(item => <li>{ item }</li>) } </ol>
-    //             <button ref={ node => { 
-    //                 node.addEventListener("click", replaceElement);
-    //             }}>Refresh View</button>
-    //             <ul>
-    //                 <li><button onclick={ () => alert("Hello") }>Click Me</button></li>
-    //                 <li><a href="">anchor</a></li>
-    //                 <li>2</li>
-    //                 <li><a href="">anchor2</a> More</li>
-    //             </ul>
-    //         </Fragment>
-    //     </div>
-    // )
 }
 
 function replaceElement() {
