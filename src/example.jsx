@@ -4,7 +4,7 @@ function dom(tag, attrs, ...children) {
         return tag.call(Object.assign(tag, {
             children: children,
             props: Object.assign({
-
+                
             }, attrs)
         }));
     }
@@ -33,7 +33,8 @@ function dom(tag, attrs, ...children) {
             }
         }
 
-        element.appendChild(fragments);    // Merge element with attributes
+        element.appendChild(fragments);
+        // Merge element with attributes
         Object.assign(element, attrs);
         
         return element;
@@ -56,12 +57,13 @@ function convert(input) {
 function Fragment() {
     return this.children;
 }
+
 function Headline() {
-    this.props.test = () => console.log(Date.now());
+    bob = () => console.log(Date.now());
 
     return (
         <h1 className="headline">
-            <button onclick={ this.props.test }>Prop Test</button>
+            <button onclick={ bob }>Prop Test</button>
             Inital Line
             <br />
             new line
