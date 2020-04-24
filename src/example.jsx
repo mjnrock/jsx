@@ -1,17 +1,26 @@
 //? https://www.npmjs.com/package/jsx-render
+//? https://gist.github.com/sergiodxa/a493c98b7884128081bb9a281952ef33
 
-function dom(tag, attrs, ...children) {
+function dom(tag, _attrs, ...children) {
+    const attrs = _attrs || {};
+    const props  = {
+        _debug: Date.now,
+        children: children,
+        ...attrs
+    };
+
     // Custom Components will be functions
-    if (typeof tag === "function") {
-        return tag.call(Object.assign(tag, {
-            children: children,
-            props: Object.assign({
-                
-            }, attrs)
-        }));
-    }
+    if(tag.isClass) {
+        let t = new tag(props);
 
-    attrs = attrs || {};
+        try {
+            return t.render(props);
+        } catch(e) {
+            throw new Error("Component must have a `render` method");
+        }
+    } else if (typeof tag === "function") {
+        return tag(props);
+    }
     
     // regular html tags will be strings to create the elements
     if (typeof tag === "string") {
@@ -21,12 +30,7 @@ function dom(tag, attrs, ...children) {
 
         children.forEach(child => {
             let result = convert(child);
-
-            if(result.nodeType === Node.TEXT_NODE || result.nodeType === Node.ELEMENT_NODE) {
-                fragments.appendChild(result);
-            } else if(Array.isArray(result)) {
-                fragments.append(...result);
-            }
+            appendFragment(fragments, result);
         });
 
         if("ref" in attrs) {
@@ -43,6 +47,17 @@ function dom(tag, attrs, ...children) {
     }
 }
 
+function appendFragment(fragments, result) {
+    if(result.nodeType === Node.TEXT_NODE || result.nodeType === Node.ELEMENT_NODE) {
+        fragments.appendChild(result);
+    } else if(Array.isArray(result)) {
+        for(let res of result) {
+            this.appendFragment(fragments, res);
+        }
+    }
+
+    return fragments;
+}
 function convert(input) {
     if (input instanceof HTMLElement) {
         return input;
@@ -55,17 +70,16 @@ function convert(input) {
     }
 }
 
-
-function Fragment() {
-    return this.children;
+function Fragment(props) {
+    return props.children;
 }
 
-function Headline() {
+function Headline(props) {
     cat = () => console.log(Date.now());
 
     return (
         <h1 className="headline">
-            <button onclick={ cat }>{ this.props.title }</button>
+            <button onclick={ cat }>{ props.title }</button>
             Inital Line
             <br />
             new line
@@ -73,11 +87,67 @@ function Headline() {
     )
 }
 
+class Component {
+    constructor(props, state = {}) {
+        this.props = props;
+        this._state = this.getInitialState(props, state);
+
+        // return new Proxy(this, {
+        //     // TODO
+        // })
+    }
+    
+    get state() {
+        return this._state;
+    }
+    set state(state) {
+        this._state = state;
+        
+        this.onUpdate(state);
+    }
+
+    getInitialState(props, state = {}) {
+        return {};
+    }
+
+    onUpdate(newState) {}
+
+    render() {
+        return (
+            <h1>*** YOU FORGOT TO ADD A RENDER METHOD ***</h1>
+        );
+    }
+}
+Component.isClass = true;
+
+class TestComponent extends Component {
+    render() {
+        // return (
+        //     <div>
+        //         Test Render Method
+        //         <div>{ this.props._debug() }</div>
+        //     </div>
+        // );
+        return (
+            <Fragment>
+                <Fragment>
+                    <div>Test Render Method START</div>
+                    <div>{ this.props._debug() }</div>
+                    <div>Test Render Method END</div>
+                </Fragment>
+            </Fragment>
+        );
+    }
+}
+
 function Main() {
     return (
         <div>
             <Fragment>
+            <Fragment>
+            <Fragment>
                 <Headline title={ `Prop Test` }/>
+                <TestComponent />
                 <p>Lorem ipsum</p>
                 <p>{ Math.random() > 0.5 ? "YES" : "NO" }</p>
                 <p>{ Date.now() }</p>
@@ -108,6 +178,8 @@ function Main() {
                         </ul>
                     </li>
                 </ul>
+            </Fragment>
+            </Fragment>
             </Fragment>
         </div>
     );
